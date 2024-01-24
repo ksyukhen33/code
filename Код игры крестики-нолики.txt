@@ -1,0 +1,299 @@
+field=[[""] *3 for i in range(3)]   -создание поля
+
+def show(): - вывод поля
+    print(f" 0 1 2")
+    print(f"0 {field[0][0]} {field[0][1]} {field[0][2]}")
+    print(f"1 {field[1][0]} {field[1][1]} {field[1][2]}")
+    print(f"2 {field[2][0]} {field[2][1]} {field[2][2]}")
+show()
+
+def show():   -аналогичная функция 
+    print(f" 0 1 2")
+    for i in range(3):
+        print(f"{i} {field[i][0]} {field[i][1]} {field[i][2]}")
+show()
+-------------------------------------------------------------------------
+field=[[""] *3 for i in range(3)]
+field[0][0] ="X"
+field[0][1] ="X"
+field[0][2] ="0"
+
+def show():
+    print(f" 0 1 2")
+    for i in range(3):
+        row_info= "".join(field[i])
+        print(f"{i} {row_info} ")
+show()
+--------------------------------------------------------------------------
+field=[[""] *3 for i in range(3)]
+
+
+def show():
+    print()
+    print("   | 0 | 1 | 2 |")
+    print("   ----------------")
+    for i, row in enumerate(field):
+        row_str = f" {i} | {'  | '.join(row)}  | "
+        print(row_str)
+        print("  ----------------")
+    print()
+show()
+--------------------------------------------------------------------------
+
+2. Спрашиваем действия пользователя (ввод данных)
+а) простой вариант
+def ask():
+    x,y=map(int, input("    Ваш ход: ").split())
+while x<0 or x>2 or y<0 or y>2:
+     x,y=map(int, input("    Ваш ход: ").split())
+    retutn x,y
+ask()
+print(field[x][y])
+-------------------------------------------------------------------------
+б) 
+def ask():
+    while True:
+      x,y=map(int, input("    Ваш ход: ").split())
+   
+     if 0<=x<=2 and 0<=y<=2:
+         if field[x][y]==" ":
+            return x,y
+         else:
+            print("Клетка занята!")
+     else:
+            print("Координаты вне диапазона!")
+
+ask()
+---------------------------------------------------------------------------
+в)  
+def ask():
+    while True:
+      x,y=map(int, input("    Ваш ход: ").split())
+if 0>x or x>2 or 0>y or y>2:
+print("Координаты вне диапазона!")
+continue
+
+if field[x][y] !="":
+print("Клетка занята!")
+continue
+
+return x,y
+
+ask()
+---------------------------------------------------------------------------
+Дополнительные проверки
+def ask():
+    while True:
+        cords = (input("    Ваш ход: ").split())
+
+        if len(cords) !=2:
+            print("Введите 2 координаты!")
+            continue
+        x,y=cords
+        if not(x.isdigit()) or not (y.isdigit()):
+            print("Введите числа!")
+            continue
+        x,y= int(x), int(y)
+
+        if 0 > x or x > 2 or 0 > y or y > 2:
+            print("Координаты вне диапазона!")
+        continue
+
+        if field[x][y] != "":
+            print("Клетка занята!")
+        continue
+
+        return x, y
+
+ask()
+-----------------------------------------------------------------------
+3. Определение очереди хода:
+num=0
+While True:
+num+=1
+
+show()
+
+if num%2==1:
+print("Ходит крестик")
+else:
+print("Ходит нолик")
+
+x,y=ask()
+
+if num%2==1:
+field[x][y]="X"
+else:
+field[x][y]="0"
+
+if num==9:
+break
+print("Ничья")
+
+------------------------------------------------------------------------
+Выигрышные комбинации
+def check_win():
+win_cord= [((0,0), (0,1), (0,2)), ((1,0), (1,1), (1,2)), ((2,0), (2,1), (2,2)),
+((0,0), (1,0), (2,0)), ((0,1), (1,1), (2,1)), ((0,2), (1,2), (2,2)), 
+((0,0), (1,1), (2,2)), ((0,2), (1,1), (2,0))] 
+
+for cord in win_cord:
+a=cord[0]
+b=cord[1]
+c=cord[2]
+
+if field [a[0]][a[1]] == field [b[0]][b[1]] == field [c[0]][c[1]] != ""
+print(f"Выиграл {field [a[0]][a[1]]}!")
+return True
+
+return False
+
+field = [
+
+["","X",""]
+["","X",""]
+["","X",""]
+]
+
+check_win()
+-------------------------------------------------------------------------
+Более простой вариант кода:
+
+def check_win():
+win_cord= [((0,0), (0,1), (0,2)), ((1,0), (1,1), (1,2)), ((2,0), (2,1), (2,2)),
+((0,0), (1,0), (2,0)), ((0,1), (1,1), (2,1)), ((0,2), (1,2), (2,2)), 
+((0,0), (1,1), (2,2)), ((0,2), (1,1), (2,0))] 
+
+for cord in win_cord:
+symbols=[]
+
+for c in cord:
+symbols.append(field[c[0]][c[1]])
+
+if symbols == ["X","X","X"]:
+print("Выиграл X!")
+return True
+
+if symbols ==["0","0","0"]:
+print("Выиграл 0!")
+return True
+
+return False
+-----------------------------------------------------------------------------
+def check_win():
+
+for i in range(3):
+symbols=[]
+
+for i in range(3):
+symbols.append(field[i][j])
+if symbols == ["X","X","X"]:
+return True
+
+for j in range(3):
+symbols.append(field[j][i])
+if symbols == ["X","X","X"]:
+return True
+
+symbols=[]
+for i in range(3):
+symbols.append(field[i][i])
+if symbols == ["X","X","X"]:
+return True
+
+symbols=[]
+for i in range(3):
+symbols.append(field[i][2-i])
+if symbols == ["X","X","X"]:
+return True
+
+return False
+---------------------------------------------------------------------------
+ИТОГО:
+def greet():
+    print("------------------")
+    print(" Приветствуем вас ")
+    print("     в игре       ")
+    print("  крестики-нолики ")
+    print("------------------")
+    print(" формат ввода:x,y ")
+    print("  x-номер строки  ")
+    print("  y-номер столбца ")
+
+def show():
+    print()
+    print("   | 0 | 1 | 2 |")
+    print("   ----------------")
+    for i, row in enumerate(field):
+        row_str = f" {i} | {'  | '.join(row)}  | "
+        print(row_str)
+        print("  ----------------")
+    print()
+
+
+def ask():
+    while True:
+        cords = (input("    Ваш ход: ").split())
+
+        if len(cords) !=2:
+            print("Введите 2 координаты!")
+            continue
+        x,y = cords
+        if not(x.isdigit()) or not (y.isdigit()):
+            print("Введите числа!")
+            continue
+        x,y= int(x), int(y)
+
+        if 0 > x or x > 2 or 0 > y or y > 2:
+            print("Координаты вне диапазона!")
+            continue
+
+        if field[x][y] != "":
+            print("Клетка занята!")
+            continue
+
+        return x, y
+
+def check_win():
+    win_cord = (((0,0), (0,1), (0,2)), ((1,0), (1,1), (1,2)), ((2,0), (2,1), (2,2)), ((0,0), (1,0), (2,0)), ((0,1), (1,1), (2,1)), ((0,2), (1,2), (2,2)),  ((0,0), (1,1), (2,2)), ((0,2), (1,1), (2,0)))
+
+    for cord in win_cord:
+        symbols=[]
+        for c in cord:
+            symbols.append(field[c[0]][c[1]])
+        if symbols == ["X","X","X"]:
+            print("Выиграл X!")
+            return True
+
+        if symbols ==["0","0","0"]:
+            print("Выиграл 0!")
+            return True
+    return False
+
+greet()
+field=[[""] *3 for i in range(3)]
+count=0
+while True:
+    count+=1
+
+    show()
+
+    if count % 2==1:
+        print("Ходит крестик")
+    else:
+        print("Ходит нолик")
+
+    x,y=ask()
+
+    if count % 2==1:
+        field[x][y]="X"
+    else:
+        field[x][y]="0"
+
+    if check_win():
+        break
+
+    if count==9:
+        print("Ничья")
+        break
+
